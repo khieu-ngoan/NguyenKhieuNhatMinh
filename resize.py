@@ -8,7 +8,7 @@ overwrite_thumb = True
 # def album_data():
 
 def resize():
-    basewidth = 300
+    img_resize = 300
     extensions = (".webp",".png",".jpeg",".JPG",'.jpg')
     skip_dir = ["src",'backup','thumb']
     thumb_dir = os.path.join(current_dir,'thumb')
@@ -62,10 +62,22 @@ def resize():
                     continue
 
                 img = Image.open(file).convert("RGB")
-                wpercent = (basewidth / float(img.size[0]))
+                
+                basewidth = img_resize
+                wpercent = (img_resize / float(img.size[0]))
                 hsize = int((float(img.size[1]) * float(wpercent)))
-                img_thumb = img.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
-                img_thumb.save(f"{thumb_dir_save}/{title}.jpg","jpeg")
+                if hsize > basewidth :
+                    img_thumb = img.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+                else:
+                    hsize = img_resize
+                    wpercent = (hsize / float(img.size[1]))
+                    basewidth = int((float(img.size[0]) * float(wpercent)))
+                    img_thumb = img.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+                        
+                cropped = img_thumb.crop( (0,0,img_resize,img_resize) )
+                cropped.save(f"{thumb_dir_save}/{title}.jpg","jpeg")
+                
+                
 
                 if name not in albums :
                     albums.append(name)
