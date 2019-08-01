@@ -57,8 +57,7 @@ def resize():
 
                 title, ext = os.path.splitext(os.path.basename(file))
                 if ext not in extensions :
-
-                    print(f"skip check type allow [{ext}]")
+                    print(f"skip resize {title}{ext} type [{ext}]")
                     continue
 
                 img = Image.open(file).convert("RGB")
@@ -77,11 +76,10 @@ def resize():
                 cropped = img_thumb.crop( (0,0,img_resize,img_resize) )
                 cropped.save(f"{thumb_dir_save}/{title}.jpg","jpeg")
                 
-                
-
                 if name not in albums :
                     albums.append(name)
-                    album["albumID"] = albums.index(name)
+                    # album["albumID"] = albums.index(name)
+                    album["albumID"] = 0
                     album['t_url'] = [f"thumb/{name}/{title}.jpg",f"thumb/{name}/{title}.jpg",f"thumb/{name}/{title}.jpg"]
                     album['t_width'] = [basewidth,basewidth,basewidth]
                     album['t_height'] = [hsize,hsize,hsize]
