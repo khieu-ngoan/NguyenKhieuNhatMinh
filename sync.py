@@ -19,7 +19,7 @@ sys.path.append("pylibs")
 from color import bcolors
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-
+typeAllow = ["image/jpeg","image/heif"]
 def downloadFiles(path,folder_id):
     for gfile in drive.ListFile({'q': "'"+folder_id+"' in parents and trashed=false"}).GetList():
         gtype = gfile['mimeType']
@@ -32,37 +32,34 @@ def downloadFiles(path,folder_id):
         else:
             file_path = os.path.join(path,title)
             # metadata = gfile["imageMediaMetadata"]
-            if not os.path.isfile(file_path) :
-                gfile.GetContentFile(file_path)
-                if gtype == "image/heif":
-                    with open(file_path, 'rb') as f:
-                        byteImg = f.read()
-                    i = pyheif.read_heif(byteImg)
-                    pi = Image.frombytes( mode=i.mode, size=i.size, data=i.data)
-                    basename, _ = os.path.splitext(title)
-
-                    pi.save(f"{path}/{basename}.jpg")
-
-                # gfile.GetContentFile(file_path)
-                # gfile.GetContentFile(file_path)
-                # downloadFile(file_path,gfile['id'])
-    
+            if not os.path.isfile(file_path):
+                if gtype in typeAllow:
+                    gfile.GetContentFile(file_path)
+                    if gtype == "image/heif":
+                        with open(file_path, 'rb') as f:
+                            byteImg = f.read()
+                        i = pyheif.read_heif(byteImg)
+                        pi = Image.frombytes( mode=i.mode, size=i.size, data=i.data)
+                        basename, _ = os.path.splitext(title)
+                        pi.save(f"{path}/{basename}.jpg")    
+                else :
+                    print(f"not download file type:{gtype} of file {title}")
 
 def gDriverTest(folder_id):
     #Login to Google Drive and create drive object
     
     action = 'sync'
 
-    for gfile in drive.ListFile({'q': "'"+folder_id+"' in parents and trashed=false"}).GetList():
-        gtype = gfile['mimeType']
-        title = gfile['title']
-        if gtype == "application/vnd.google-apps.folder":
-            dir_check = os.path.join(current_dir,title)
-            if not os.path.exists(dir_check):
-                os.makedirs(dir_check)
+    # for gfile in drive.ListFile({'q': "'"+folder_id+"' in parents and trashed=false"}).GetList():
+    #     gtype = gfile['mimeType']
+    #     title = gfile['title']
+    #     if gtype == "application/vnd.google-apps.folder":
+    #         dir_check = os.path.join(current_dir,title)
+    #         if not os.path.exists(dir_check):
+    #             os.makedirs(dir_check)
             
-            print("check directory ",dir_check, " gfolderId",gfile["id"])
-            downloadFiles(dir_check,gfile["id"])
+    #         print("check directory ",dir_check, " gfolderId",gfile["id"])
+    #         downloadFiles(dir_check,gfile["id"])
             # sys.exit()
 
 
@@ -86,7 +83,7 @@ def gDriverTest(folder_id):
 def main():
     # ap = argparse.ArgumentParser()
     folder_id = '1XNoWxuOy7RzGu6NXt3LAfNgg7f_ySu3w'
-    gDriverTest(folder_id)
+    downloadFiles(current_dir,folder_id)
 
 if __name__ == "__main__":
     main()
