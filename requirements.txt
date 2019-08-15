@@ -1,0 +1,8 @@
+# google api
+apiclient
+PyDrive
+
+# image proccess
+webp
+pyheif
+
