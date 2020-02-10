@@ -1,6 +1,6 @@
 import argparse, sys, glob, os, io
-import pyheif
-import webp as WEBP_CONVERT
+# import pyheif
+# import webp as WEBP_CONVERT
 from PIL import Image
 # from apiclient.http import MediaIoBaseDownload
 from pydrive.auth import GoogleAuth

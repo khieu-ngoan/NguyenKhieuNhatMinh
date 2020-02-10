@@ -1,4 +1,7 @@
 .directory
-
+pylibs
 credentials.json
+client_secrets.json
+pylibs
+
 settings.yaml
