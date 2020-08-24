@@ -1,6 +1,6 @@
 import argparse, sys, glob, os, io
-import pyheif
-import webp as WEBP_CONVERT
+# import pyheif
+# import webp as WEBP_CONVERT
 from PIL import Image
 # from apiclient.http import MediaIoBaseDownload
 from pydrive.auth import GoogleAuth
@@ -16,7 +16,7 @@ httpauth = g_login.Get_Http_Object()
 
 
 sys.path.append("pylibs")
-from color import bcolors
+# from color import bcolors
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 typeAllow = ["image/jpeg","image/heif"]
