@@ -16,7 +16,7 @@ httpauth = g_login.Get_Http_Object()
 
 
 sys.path.append("pylibs")
-from color import bcolors
+# from color import bcolors
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 typeAllow = ["image/jpeg","image/heif"]
